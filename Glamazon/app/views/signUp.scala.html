@@ -1,0 +1,15 @@
+@(signUpForm: Form[(String, String)])
+
+@import helper._
+
+@main("Sign Up for Glamazon") {
+
+  <h1> Sign Up </h2>
+
+  @form(routes.Application.signUp) {
+    @inputText(signUpForm("username"))
+    @inputText(signUpForm("password"))
+
+    <input type="submit" value="Submit">
+  }
+}

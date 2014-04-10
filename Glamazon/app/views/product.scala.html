@@ -1,0 +1,13 @@
+@(product: Product)
+
+@import helper._
+
+@main("Glamazon Product") {
+  <h1> @product.product_name
+  </h2>
+  <h2> @product.selling_cost
+  </h2>
+  <h2><a href="\additem\@product.product_name
+  ">Add Item to Cart</a></h2>
+}
+

@@ -1,0 +1,17 @@
+@(loginForm: Form[(String, String)])
+
+@import helper._
+
+@main("Login to Glamazon") {
+
+  <h1> Login </h2>
+
+  @form(routes.Application.login) {
+    @inputText(loginForm("username"))
+    @inputText(loginForm("password"))
+
+    <input type="submit" value="Submit">
+  }
+
+  <h1> Don't have a password? <a href="/signup">Sign Up</a></h1>
+}

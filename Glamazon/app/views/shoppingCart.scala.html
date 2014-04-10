@@ -1,0 +1,18 @@
+@(productNames: List[String])
+
+@import helper._
+
+@main("Your Shopping Cart") {
+  <ul>
+    @productNames.map { name =>
+      <li>
+        <a href="/product/@name
+        ">@name
+        </a>
+      </li>
+    }
+  </ul>
+  <h2><a href="/products"> Back to Products </a></h2>
+  <h2><a href="/logout"> Logout </a></h2>
+}
+

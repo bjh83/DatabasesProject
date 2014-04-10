@@ -1,0 +1,21 @@
+@(products: List[Product])
+
+@import helper._
+
+@main("Glamazon Products") {
+  <h1> Products </h1>
+  <ul>
+    @products.map { product =>
+      <li>
+        <a href="/product/@product.product_name
+        ">@product.product_name
+        </a>
+      </li>
+      <li> 
+        @product.selling_cost
+      </li>
+    }
+  </ul>
+  <h2><a href="/shoppingcart">Go to Shopping Cart</a><h2>
+  <h2><a href="/logout"> Logout </a></h2>
+}
