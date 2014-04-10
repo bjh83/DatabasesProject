@@ -1,4 +1,8 @@
-This is your new Play application
+Glamazon
 =====================================
 
-This file will be packaged with your application, when using `play dist`.
+To run the application:
+type: ./bin/glamazon
+
+Then in a web browser go to:
+localhost:9000
