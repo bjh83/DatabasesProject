@@ -7,12 +7,12 @@
   <ul>
     @products.map { product =>
       <li>
-        <a href="/product/@product.product_name
-        ">@product.product_name
+        <a href="/product/@product.productName
+        ">@product.productName
         </a>
       </li>
       <li> 
-        @product.selling_cost
+        @product.sellingCost
       </li>
     }
   </ul>

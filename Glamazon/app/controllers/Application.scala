@@ -5,23 +5,26 @@ import play.api._
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
-import models.Product
+import models._
 
 object Application extends Controller with Secured {
+  Database.forURL("jdbc:mysql://localhost:3306/Assignment5?user=root", driver = "com.mysql.jdbc.Driver") withSession {
+    implicit session =>
   
   val sampleProducts: Map[String, Product] = Map("Soap" -> Product(0, "Soap", 20.0f), "Cheese" -> Product(1, "Cheese", 1.0f), "Phone" -> Product(2, "Phone", 100.0f))
 
-  val users: HashMap[String, String] = HashMap()
+  val users = TableQuery[Customers]
 
   val shoppingCart: HashMap[String, List[Product]] = HashMap()
 
   val signUpForm = Form(
-    tuple(
+    mapping(
       "username" -> text,
-      "password" -> text
-      ) verifying ("Invalid name or password", result => result match {
-        case (name, password) => !users.contains(name)
-      })
+      "password" -> text,
+      "last name" -> text,
+      "first name" -> text,
+      "email address" -> text
+      )(Customer.apply)(Customer.unapply)
   )
 
   val loginForm = Form(
@@ -33,8 +36,8 @@ object Application extends Controller with Secured {
       })
   )
 
-  def check(username: String, password: String): Boolean = 
-    users.contains(username) && users(username) == password
+  def check(userName: String, password: String): Boolean = 
+    users.filter(_.userName == userName).first.password == password
 
   def index = withAuth { username => implicit request =>
     Ok(views.html.products(sampleProducts.values.toList))
@@ -51,9 +54,10 @@ object Application extends Controller with Secured {
     println(populatedForm.errors)
     populatedForm.fold(
       formWithErrors => BadRequest(views.html.login(formWithErrors)),
-      user => {
+      userForm => {
+        val user = users.filter(_.userName == userForm._1).first
         println("Logging in")
-        Redirect(routes.Application.index).withSession(Security.username -> user._1)
+        Redirect(routes.Application.index).withSession(Security.username -> user.id)
       }
     )
   }
@@ -72,8 +76,8 @@ object Application extends Controller with Secured {
     signUpForm.bindFromRequest.fold(
       formWithErrors => BadRequest(views.html.signUp(formWithErrors)),
       user => {
-        users(user._1) = user._2
-        Redirect(routes.Application.index).withSession(Security.username -> user._1)
+        users += user
+        Redirect(routes.Application.index).withSession(Security.username -> users.filter(_.userName == user.userName).first.id)
       }
     )
   }
@@ -103,6 +107,8 @@ object Application extends Controller with Secured {
 
 
   def checkout = TODO
+
+  }
 
 }
 
