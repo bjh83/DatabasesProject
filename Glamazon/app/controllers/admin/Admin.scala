@@ -30,7 +30,7 @@ object Admin extends Controller with Secured {
   def index = TODO
 
   def displayLogin = DBAction { implicit request =>
-    OK(views.html.admin.login(loginForm))
+    Ok(views.html.admin.login(loginForm))
   }
 
   def login = DBAction { implicit request =>
@@ -40,7 +40,7 @@ object Admin extends Controller with Secured {
       formWithErrors => BadRequest(views.html.admin.login(formWithErrors)),
       userForm => {
         val admin = admins.filter(_.userName === userForm._1).first
-        Redirect(routes.Admin.index).withSession(Security.username -> user.userName)
+        Redirect(routes.Admin.index).withSession(Security.username -> admin.userName)
       }
     )
   }

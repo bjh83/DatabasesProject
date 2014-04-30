@@ -2,7 +2,7 @@
 
 @import helper._
 
-@main("Administrator Accounts") {
+@views.html.user.main("Administrator Accounts") { 
 
     <h1>@accounts.size accounts</h1>
 
@@ -15,7 +15,7 @@
                 @account.firstName
                 @account.emailAddress
 
-                @form(controller.admin.routes.Products.deleteProduct(account.id)) {
+                @form(controllers.admin.routes.Products.deleteProduct(account.id.get)) {
                     <input type="submit" value="Delete">
                 }
             </li>
@@ -24,7 +24,7 @@
 
     <h2>Add a new account</h2>
 
-    @form(controller.admin.routes.AdministratorAccounts.newAccount) {
+    @form(controllers.admin.routes.AdminAccounts.newAccount) {
         @inputText(adminForm("user name"))
         @inputText(adminForm("password"))
         @inputText(adminForm("last name"))

@@ -28,6 +28,7 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 GET     /admin                      controllers.admin.Admin.index
 GET     /admin/login                controllers.admin.Admin.displayLogin
 POST    /admin/login                controllers.admin.Admin.login
+GET     /admin/logout               controllers.admin.Admin.logout
 
 # Manage Admin Accounts
 GET     /admin/admin_accounts       controllers.admin.AdminAccounts.accounts

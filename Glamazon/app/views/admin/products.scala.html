@@ -2,7 +2,7 @@
 
 @import helper._
 
-@main("Products") {
+@views.html.user.main("Products") {
 
     <h1>@products.size products</h1>
 
@@ -12,7 +12,7 @@
                 @product.productName
                 @product.sellingCost
 
-                @form(controller.admin.routes.Products.deleteProduct(product.upc)) {
+                @form(controllers.admin.routes.Products.deleteProduct(product.upc)) {
                     <input type="submit" value="Delete">
                 }
             </li>
@@ -21,9 +21,9 @@
 
     <h2>Add a new product</h2>
 
-    @form(controller.admin.routes.Products.newProduct) {
+    @form(controllers.admin.routes.Products.newProduct) {
         @inputText(productForm("upc"))
-        @inputText(productForm("productName"))
+        @inputText(productForm("product name"))
         @inputText(productForm("selling cost"))
 
         <input type="submit" value="Create">

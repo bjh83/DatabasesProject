@@ -24,9 +24,9 @@ object Products extends Controller with Secured {
     Ok(views.html.user.product(products.filter(_.productName === productName).first))
   }
 
-  def addItem(productName: String) = withDBAuth { username => implicit request =>
+  def addItem(productName: String) = withDBAuth { userName => implicit request =>
       val upc = products.filter(_.productName === productName).first.upc
-      val uid = users.filter(_.userName === productName).first.id.get
+      val uid = users.filter(_.userName === userName).first.id.get
       shoppingCart += ShoppingCartEntry(None, uid, upc, 1)
 
       Ok(views.html.user.products(products.list))
