@@ -1,0 +1,31 @@
+@(products: List[models.user.Product], productForm: Form[models.user.Product])
+
+@import helper._
+
+@main("Products") {
+
+    <h1>@products.size products</h1>
+
+    <ul>
+        @products.map { product =>
+            <li>
+                @product.productName
+                @product.sellingCost
+
+                @form(controller.admin.routes.Products.deleteProduct(product.upc)) {
+                    <input type="submit" value="Delete">
+                }
+            </li>
+        }
+    </ul>
+
+    <h2>Add a new product</h2>
+
+    @form(controller.admin.routes.Products.newProduct) {
+        @inputText(productForm("upc"))
+        @inputText(productForm("productName"))
+        @inputText(productForm("selling cost"))
+
+        <input type="submit" value="Create">
+    }
+}
