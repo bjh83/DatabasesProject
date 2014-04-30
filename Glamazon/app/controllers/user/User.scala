@@ -45,11 +45,11 @@ object User extends Controller with Secured {
     users.filter(_.userName === userName).first.password == password
 
   def index = DBAction { implicit request =>
-    Ok(views.html.products(products.list))
+    Ok(views.html.user.products(products.list))
   }
 
   def displayLogin = DBAction { implicit request =>
-    Ok(views.html.login(loginForm))
+    Ok(views.html.user.login(loginForm))
   }
 
   def login = DBAction { implicit request =>
@@ -57,31 +57,31 @@ object User extends Controller with Secured {
     val populatedForm = loginForm.bindFromRequest
     println(populatedForm.errors)
     populatedForm.fold(
-      formWithErrors => BadRequest(views.html.login(formWithErrors)),
+      formWithErrors => BadRequest(views.html.user.login(formWithErrors)),
       userForm => {
         val user = users.filter(_.userName === userForm._1).first
         println("Logging in")
-        Redirect(routes.user.User.index).withSession(Security.username -> user.userName)
+        Redirect(routes.User.index).withSession(Security.username -> user.userName)
       }
     )
   }
 
   def logout = Action {
-    Redirect(routes.user.User.displayLogin).withNewSession.flashing(
+    Redirect(routes.User.displayLogin).withNewSession.flashing(
       "success" -> "you are logged out"
     )
   }
 
   def displaySignUp = Action {
-    Ok(views.html.signUp(signUpForm))
+    Ok(views.html.user.signUp(signUpForm))
   }
 
   def signUp = DBAction { implicit request =>
     signUpForm.bindFromRequest.fold(
-      formWithErrors => BadRequest(views.html.signUp(formWithErrors)),
+      formWithErrors => BadRequest(views.html.user.signUp(formWithErrors)),
       user => {
         users += user
-        Redirect(routes.user.User.index).withSession(Security.username -> users.filter(_.userName === user.userName).first.userName)
+        Redirect(routes.User.index).withSession(Security.username -> users.filter(_.userName === user.userName).first.userName)
       }
     )
   }

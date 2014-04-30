@@ -1,12 +1,13 @@
-@(signUpForm: Form[Customer])
+@(signUpForm: Form[models.user.Customer])
 
 @import helper._
+@import models.user._
 
 @main("Sign Up for Glamazon") {
 
   <h1> Sign Up </h2>
 
-  @form(routes.user.User.signUp) {
+  @form(controllers.user.routes.User.signUp) {
     @inputText(signUpForm("username"))
     @inputText(signUpForm("password"))
     @inputText(signUpForm("last name"))

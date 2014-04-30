@@ -17,11 +17,11 @@ object Products extends Controller with Secured {
   val users = TableQuery[Customers]
 
   def displayProducts = DBAction { implicit request =>
-    Ok(views.html.products(products.list))
+    Ok(views.html.user.products(products.list))
   }
 
   def product(productName: String) = DBAction { implicit request =>
-    Ok(views.html.product(products.filter(_.productName === productName).first))
+    Ok(views.html.user.product(products.filter(_.productName === productName).first))
   }
 
   def addItem(productName: String) = withDBAuth { username => implicit request =>
@@ -29,6 +29,6 @@ object Products extends Controller with Secured {
       val uid = users.filter(_.userName === productName).first.id.get
       shoppingCart += ShoppingCartEntry(None, uid, upc, 1)
 
-      Ok(views.html.products(products.list))
+      Ok(views.html.user.products(products.list))
   }
 }

@@ -19,7 +19,7 @@ object ShoppingCart extends Controller with Secured {
   def displayShoppingCart = withDBAuth { username => implicit request =>
     val uid = users.filter(_.userName === username).first.id.get
     val shoppingCartContents = shoppingCart.filter(_.customerId === uid).flatMap(sc => products.filter(sc.productId === _.upc)).map(_.productName).list
-    Ok(views.html.shoppingCart(shoppingCartContents))
+    Ok(views.html.user.shoppingCart(shoppingCartContents))
   }
 
   def checkout = TODO
