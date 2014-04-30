@@ -3,23 +3,23 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.User.index
+GET     /                           controllers.user.User.index
 
 # Users
-GET     /login                      controllers.User.displayLogin
-POST    /login                      controllers.User.login
-GET     /signup                     controllers.User.displaySignUp
-POST    /signup                     controllers.User.signUp
-GET     /logout                     controllers.User.logout
+GET     /login                      controllers.user.User.displayLogin
+POST    /login                      controllers.user.User.login
+GET     /signup                     controllers.user.User.displaySignUp
+POST    /signup                     controllers.user.User.signUp
+GET     /logout                     controllers.user.User.logout
 
 # Products
-GET     /products                   controllers.Products.displayProducts
-GET     /product/*productName       controllers.Products.product(productName)
-GET     /additem/*productName       controllers.Products.addItem(productName)
+GET     /products                   controllers.user.Products.displayProducts
+GET     /product/*productName       controllers.user.Products.product(productName)
+GET     /additem/*productName       controllers.user.Products.addItem(productName)
 
 # Shopping Cart
-GET     /shoppingcart               controllers.ShoppingCart.displayShoppingCart
-POST    /checkout                   controllers.ShoppingCart.checkout
+GET     /shoppingcart               controllers.user.ShoppingCart.displayShoppingCart
+POST    /checkout                   controllers.user.ShoppingCart.checkout
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

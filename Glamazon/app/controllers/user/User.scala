@@ -1,4 +1,4 @@
-package controllers
+package controllers.user
 
 import scala.collection.mutable.HashMap
 import play.api._
@@ -7,7 +7,7 @@ import play.api.data._
 import play.api.data.Forms._
 import play.api.db.slick._
 import play.api.db.slick.Config.driver.simple._
-import models._
+import models.user._
 
 object User extends Controller with Secured {
 
@@ -61,13 +61,13 @@ object User extends Controller with Secured {
       userForm => {
         val user = users.filter(_.userName === userForm._1).first
         println("Logging in")
-        Redirect(routes.User.index).withSession(Security.username -> user.userName)
+        Redirect(routes.user.User.index).withSession(Security.username -> user.userName)
       }
     )
   }
 
   def logout = Action {
-    Redirect(routes.User.displayLogin).withNewSession.flashing(
+    Redirect(routes.user.User.displayLogin).withNewSession.flashing(
       "success" -> "you are logged out"
     )
   }
@@ -81,7 +81,7 @@ object User extends Controller with Secured {
       formWithErrors => BadRequest(views.html.signUp(formWithErrors)),
       user => {
         users += user
-        Redirect(routes.User.index).withSession(Security.username -> users.filter(_.userName === user.userName).first.userName)
+        Redirect(routes.user.User.index).withSession(Security.username -> users.filter(_.userName === user.userName).first.userName)
       }
     )
   }

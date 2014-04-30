@@ -1,4 +1,4 @@
-package models
+package models.user
 
 import scala.slick.driver.MySQLDriver.simple._
 
