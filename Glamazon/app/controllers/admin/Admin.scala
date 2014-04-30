@@ -27,7 +27,9 @@ object Admin extends Controller with Secured {
   def check(userName: String, password: String)(implicit session: MySession): Boolean =
     admins.filter(_.userName === userName).first.password == password
 
-  def index = TODO
+  def index = withDBAuth { userName => implicit request =>
+    Ok(views.html.admin.index())
+  }
 
   def displayLogin = DBAction { implicit request =>
     Ok(views.html.admin.login(loginForm))
