@@ -1,0 +1,15 @@
+@(loginForm: Form[(String, String)])
+
+@import helper._
+
+@main("Login to Glamazon") {
+
+  <h1> Login </h2>
+
+  @form(controllers.admin.routes.Admin.login) {
+    @inputText(loginForm("username"))
+    @inputText(loginForm("password"))
+
+    <input type="submit" value="Submit">
+  }
+}
