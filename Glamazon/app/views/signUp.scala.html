@@ -1,4 +1,4 @@
-@(signUpForm: Form[(String, String)])
+@(signUpForm: Form[Customer])
 
 @import helper._
 
@@ -9,6 +9,9 @@
   @form(routes.Application.signUp) {
     @inputText(signUpForm("username"))
     @inputText(signUpForm("password"))
+    @inputText(signUpForm("last name"))
+    @inputText(signUpForm("first name"))
+    @inputText(signUpForm("email address"))
 
     <input type="submit" value="Submit">
   }

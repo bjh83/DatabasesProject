@@ -5,11 +5,13 @@ import play.api._
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
+import play.api.db.slick._
+import play.api.db.slick.Config.driver.simple._
 import models._
 
 object Application extends Controller with Secured {
-  Database.forURL("jdbc:mysql://localhost:3306/Assignment5?user=root", driver = "com.mysql.jdbc.Driver") withSession {
-    implicit session =>
+
+  type MySession = scala.slick.jdbc.JdbcBackend#Session
   
   val sampleProducts: Map[String, Product] = Map("Soap" -> Product(0, "Soap", 20.0f), "Cheese" -> Product(1, "Cheese", 1.0f), "Phone" -> Product(2, "Phone", 100.0f))
 
@@ -24,10 +26,12 @@ object Application extends Controller with Secured {
       "last name" -> text,
       "first name" -> text,
       "email address" -> text
-      )(Customer.apply)(Customer.unapply)
+    )((userName, password, lastName, firstName, emailAddress) => 
+      Customer(None, userName, password, lastName, firstName, emailAddress))
+    (customer => Some(customer.userName, customer.password, customer.lastName, customer.firstName, customer.emailAddress))
   )
 
-  val loginForm = Form(
+  def loginForm(implicit session: MySession) = Form(
     tuple(
       "username" -> text,
       "password" -> text
@@ -36,28 +40,28 @@ object Application extends Controller with Secured {
       })
   )
 
-  def check(userName: String, password: String): Boolean = 
-    users.filter(_.userName == userName).first.password == password
+  def check(userName: String, password: String)(implicit session: MySession): Boolean =
+    users.filter(_.userName === userName).first.password == password
 
   def index = withAuth { username => implicit request =>
     Ok(views.html.products(sampleProducts.values.toList))
   }
 
   // Users
-  def displayLogin = Action { implicit request =>
+  def displayLogin = DBAction { implicit request =>
     Ok(views.html.login(loginForm))
   }
 
-  def login = Action { implicit request =>
+  def login = DBAction { implicit request =>
     println("Recieved login request")
     val populatedForm = loginForm.bindFromRequest
     println(populatedForm.errors)
     populatedForm.fold(
       formWithErrors => BadRequest(views.html.login(formWithErrors)),
       userForm => {
-        val user = users.filter(_.userName == userForm._1).first
+        val user = users.filter(_.userName === userForm._1).first
         println("Logging in")
-        Redirect(routes.Application.index).withSession(Security.username -> user.id)
+        Redirect(routes.Application.index).withSession(Security.username -> user.userName)
       }
     )
   }
@@ -72,12 +76,12 @@ object Application extends Controller with Secured {
     Ok(views.html.signUp(signUpForm))
   }
 
-  def signUp = Action { implicit request =>
+  def signUp = DBAction { implicit request =>
     signUpForm.bindFromRequest.fold(
       formWithErrors => BadRequest(views.html.signUp(formWithErrors)),
       user => {
         users += user
-        Redirect(routes.Application.index).withSession(Security.username -> users.filter(_.userName == user.userName).first.id)
+        Redirect(routes.Application.index).withSession(Security.username -> users.filter(_.userName === user.userName).first.userName)
       }
     )
   }
@@ -107,8 +111,6 @@ object Application extends Controller with Secured {
 
 
   def checkout = TODO
-
-  }
 
 }
 
