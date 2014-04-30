@@ -1,0 +1,12 @@
+@(products: List[models.user.Product])
+
+@views.html.user.main("Transactions") {
+    <ul>
+        @products.map { product =>
+            <li>
+                @product.productName
+                @product.sellingCost
+            </li>
+        }
+    </ul>
+}

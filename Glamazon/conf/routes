@@ -45,3 +45,7 @@ GET     /admin/delete_product/:upc  controllers.admin.Products.deleteProduct(upc
 GET     /admin/users                controllers.admin.Users.users
 POST    /admin/new_user             controllers.admin.Users.newUser
 GET     /admin/delete_user/:id      controllers.admin.Users.deleteUser(id: Int)
+
+# Admin View Purchases
+GET     /admin/transactions         controllers.admin.Purchases.transactions
+GET     /admin/transaction/:id      controllers.admin.Purchases.transaction(id: Int)

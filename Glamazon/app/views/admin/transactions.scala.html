@@ -1,0 +1,11 @@
+@(transactions: List[models.user.Purchase])
+
+@views.html.user.main("Transactions") {
+    <ul>
+    @transactions.map { transaction =>
+        <li>
+            <a href="/admin/transaction/@transaction.id">@transaction.date.get</a>
+        </li>
+    }
+    </ul>
+}
