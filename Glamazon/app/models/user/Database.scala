@@ -1,5 +1,6 @@
 package models.user
 
+import java.sql.Timestamp
 import scala.slick.driver.MySQLDriver.simple._
 
 case class Product(upc: Int, productName: String, sellingCost: Float)
@@ -36,4 +37,28 @@ class ShoppingCart(tag: Tag) extends Table[ShoppingCartEntry](tag, "SHOPPING_CAR
   def product = foreignKey("P_FK", productId, TableQuery[Products])(_.upc)
 
   def * = (id.?, customerId, productId, quantity) <> (ShoppingCartEntry.tupled, ShoppingCartEntry.unapply)
+}
+
+case class Purchase(id: Option[Int], date: Option[Timestamp], customerId: Int)
+
+class Purchases(tag: Tag) extends Table[Purchase](tag, "PURCHASES") {
+  def id = column[Int]("PID", O.PrimaryKey, O.AutoInc)
+  def date = column[Timestamp]("DATE")
+  def customerId = column[Int]("CID")
+  def customer = foreignKey("C_FK", customerId, TableQuery[Customers])(_.id)
+
+  def * = (id.?, date.?, customerId) <> (Purchase.tupled, Purchase.unapply)
+}
+
+case class PurchaseEntry(id: Option[Int], productId: Int, quantity: Int, purchaseId: Int)
+
+class PurchaseEntries(tag: Tag) extends Table[PurchaseEntry](tag, "PURCHASE_ENTRIES") {
+  def id = column[Int]("PEID", O.PrimaryKey, O.AutoInc)
+  def productId = column[Int]("UPC")
+  def quantity = column[Int]("QUANTITY")
+  def purchaseId = column[Int]("PID")
+  def product = foreignKey("P_FK", productId, TableQuery[Products])(_.upc)
+  def purchase = foreignKey("PURCHASE_FK", purchaseId, TableQuery[Purchases])(_.id)
+  
+  def * = (id.?, productId, quantity, purchaseId) <> (PurchaseEntry.tupled, PurchaseEntry.unapply)
 }
