@@ -1,0 +1,36 @@
+@(accounts: List[models.admin.Administrator], adminForm: Form[models.admin.Administrator])
+
+@import helper._
+
+@main("Administrator Accounts") {
+
+    <h1>@accounts.size accounts</h1>
+
+    <ul>
+        @accounts.map { account =>
+            <li>
+                @account.userName
+                @account.password
+                @account.lastName
+                @account.firstName
+                @account.emailAddress
+
+                @form(controller.admin.routes.Products.deleteProduct(account.id)) {
+                    <input type="submit" value="Delete">
+                }
+            </li>
+        }
+    </ul>
+
+    <h2>Add a new account</h2>
+
+    @form(controller.admin.routes.AdministratorAccounts.newAccount) {
+        @inputText(adminForm("user name"))
+        @inputText(adminForm("password"))
+        @inputText(adminForm("last name"))
+        @inputText(adminForm("first name"))
+        @inputText(adminForm("email address"))
+
+        <input type="submit" value="Create">
+    }
+}

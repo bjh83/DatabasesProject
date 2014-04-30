@@ -29,5 +29,12 @@ GET     /admin                      controllers.admin.Admin.index
 GET     /admin/login                controllers.admin.Admin.displayLogin
 POST    /admin/login                controllers.admin.Admin.login
 
+# Manage Admin Accounts
+GET     /admin/admin_accounts       controllers.admin.AdminAccounts.accounts
+POST    /admin/admin_new            controllers.admin.AdminAccounts.newAccount
+GET     /admin/admin_delete/:id     controllers.admin.AdminAccounts.deleteAccount(id: Int)
+
 # Admin Products
-GET     /admin/products             controllers.admin.Admin.products
+GET     /admin/products             controllers.admin.Products.products
+POST    /admin/new_product          controllers.admin.Products.newProduct
+GET     /admin/delete_product/:upc  controllers.admin.Products.deleteProduct(upc: Int)
