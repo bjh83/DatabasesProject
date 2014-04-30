@@ -39,3 +39,8 @@ GET     /admin/admin_delete/:id     controllers.admin.AdminAccounts.deleteAccoun
 GET     /admin/products             controllers.admin.Products.products
 POST    /admin/new_product          controllers.admin.Products.newProduct
 GET     /admin/delete_product/:upc  controllers.admin.Products.deleteProduct(upc: Int)
+
+# Admin Manage Users
+GET     /admin/users                controllers.admin.Users.users
+POST    /admin/new_user             controllers.admin.Users.newUser
+GET     /admin/delete_user/:id      controllers.admin.Users.deleteUser(id: Int)

@@ -1,4 +1,4 @@
-@(accounts: List[models.admin.Administrator], adminForm: Form[models.admin.Administrator])
+@(accounts: List[models.user.Customer], adminForm: Form[models.user.Customer])
 
 @import helper._
 
@@ -15,7 +15,7 @@
                 @account.firstName
                 @account.emailAddress
 
-                @form(controllers.admin.routes.AdminAccounts.deleteAccount(account.id.get)) {
+                @form(controllers.admin.routes.Users.deleteUser(account.id.get)) {
                     <input type="submit" value="Delete">
                 }
             </li>
@@ -24,7 +24,7 @@
 
     <h2>Add a new account</h2>
 
-    @form(controllers.admin.routes.AdminAccounts.newAccount) {
+    @form(controllers.admin.routes.Users.newUser) {
         @inputText(adminForm("user name"))
         @inputText(adminForm("password"))
         @inputText(adminForm("last name"))
