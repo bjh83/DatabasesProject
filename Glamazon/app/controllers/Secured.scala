@@ -10,7 +10,7 @@ import play.api.db.slick.Config.driver.simple._
 trait Secured {
   def username(request: RequestHeader) = request.session.get(Security.username)
 
-  def onUnauthorized(request: RequestHeader) = Results.Redirect(routes.Application.displayLogin)
+  def onUnauthorized(request: RequestHeader) = Results.Redirect(routes.User.displayLogin)
 
   def withAuth(f: => String => Request[AnyContent] => Result) = {
     Security.Authenticated(username, onUnauthorized) { user =>
@@ -18,7 +18,7 @@ trait Secured {
     }
   }
 
-  def withDBAuth(f: => String => Request[AnyContent] => Result) = {
+  def withDBAuth(f: => String => DBSessionRequest[_] => SimpleResult) = {
       Security.Authenticated(username, onUnauthorized) { user =>
           DBAction(request => f(user)(request))
       }
