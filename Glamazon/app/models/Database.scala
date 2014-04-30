@@ -25,7 +25,7 @@ class Customers(tag: Tag) extends Table[Customer](tag, "CUSTOMERS") {
     def * = (id.?, userName, password, lastName, firstName, emailAddress) <> (Customer.tupled, Customer.unapply)
 }
 
-case class ShoppingCartEntry(id: Int, customerId: Int, productId: Int, quantity: Int)
+case class ShoppingCartEntry(id: Option[Int], customerId: Int, productId: Int, quantity: Int)
 
 class ShoppingCart(tag: Tag) extends Table[ShoppingCartEntry](tag, "SHOPPING_CART") {
   def id = column[Int]("SCID", O.PrimaryKey, O.AutoInc)
@@ -35,5 +35,5 @@ class ShoppingCart(tag: Tag) extends Table[ShoppingCartEntry](tag, "SHOPPING_CAR
   def customer = foreignKey("C_FK", customerId, TableQuery[Customers])(_.id)
   def product = foreignKey("P_FK", productId, TableQuery[Products])(_.upc)
 
-  def * = (id, customerId, productId, quantity) <> (ShoppingCartEntry.tupled, ShoppingCartEntry.unapply)
+  def * = (id.?, customerId, productId, quantity) <> (ShoppingCartEntry.tupled, ShoppingCartEntry.unapply)
 }
